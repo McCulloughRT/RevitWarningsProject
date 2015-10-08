@@ -1,0 +1,122 @@
+<html>
+<head>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-43851017-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <title> Revit Warnings </title>
+  <link rel="stylesheet" type="text/css" href="./css/warnStyle.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+<body id='backgroundStyle'>
+  <br /><br />
+  <div id='uploadMain'>
+    <br />
+    <p id='titleLine' align='center' style='margin-top: 20px; margin-bottom: 10px'><font color='#736868' size='50'>Revit Warnings Project</font></p>
+    <br />
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="/data">Data </a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="/upload"><b><font size='4' color='#369b8b'>Contribute Data ! </font></b></a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <br />
+    <div class='warning'>
+      <div id='topTextBlock'>
+        <p align='center' style='margin-bottom: 0px'><font size='7'>Contributing Is Easy!</font></p>
+        <p align='center'><font size='2'>If you want to remove a project you sent in, <a href="/remove">click here.</a></font></p>
+      </div>
+      <br>
+      <div id='leftUpload'>
+        <p><font size='6'>1. Export your warnings file: </font></p><br>
+        <b>
+        <ul>
+          <li>
+            <p>Go to the manage tab and click "Warnings"</p>
+            <img src="./img/manageBarLOcrop.png">
+          </li>
+          <br>
+          <li>
+            <p>When the Warnings Dialog appears, <br> click "export" and save the file.</p>
+            <img src="./img/warningsLO.png" width='400px'>
+          </li>
+          <br>
+          <li>
+            <p>Follow the directions on the right to upload!</p>
+          </li>
+        </ul>
+        </b>
+      </div>
+      <div id='rightUpload'>
+        <p align='center' style="margin-top: 10px"><font size='6'>2. Upload Your Export!</font></p>
+        <br>
+        <form action="/upload" enctype="multipart/form-data" method="post" style="margin-left: 10px" id="form1">
+          <p>Choose what phase your project is in from the <br> drop down, and select your warnings file: </p>
+          <select name="phase">
+            <option value="SD">SD</option>
+            <option value="DD">DD</option>
+            <option value="CD">CD</option>
+            <option value="CA">CA</option>
+          </select><br><br>
+          <input type="file" accept=".html" name="upload" align="right"><br><br>
+          <p>If you would like to receive updates with new data and results, please enter your email below: <br>(not required)</p>
+          <input type="email" name="email" autocomplete="on" placeholder="myemail@example.com"><br><br>
+          <input name="my_form_submit" type="button" value="Send" class="btn btn-primary" onclick="submitModal();">
+	  <br><br>
+          <p>Your email will not be connected in any way with the file you upload.</p><br>
+	  <p>Your file is never stored on our servers. Only the names of warnings and the element types they affect are sent to the database. We have gone to great lengths to ensure the process is as anonymous as possible.</p>
+	  <br>
+        </form>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Sending...</h4>
+            </div>
+            <div class="modal-body">
+              Please wait while your file is being processed ...
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                  <span class="sr-only"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal -->
+    </div>
+    <br />
+  </div>
+  <br><br><br>
+  <script>
+    submitModal = function(){
+      $('#myModal').modal('show');
+      document.forms['form1'].submit();
+    }
+  </script>
+</body>
+</html>

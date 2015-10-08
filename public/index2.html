@@ -1,0 +1,142 @@
+<html>
+<head>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-43851017-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <title> Revit Warnings </title>
+  <link rel="stylesheet" type="text/css" href="./css/warnStyle.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="./js/line.js"></script>
+  <script src="./js/pie.js"></script>
+  <script src="./js/box.js"></script>
+  <script src="./js/boxplot.js"></script>
+  <script src="./js/indFrame.js"></script>
+</head>
+<body id='backgroundStyle'>
+  <br /><br />
+  <div id='main'>
+    <br />
+    <p id='titleLine' align='center' style='margin-top: 20px; margin-bottom: 10px'><font color='#736868' size='50'>Revit Warnings Project</font></p>
+    <br />
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="/data">Data </a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/upload"><b><font size='4' color='#369b8b'>Contribute Data ! </font></b></a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <br />
+
+    <div id='topTextBlock'>
+      <p align='center'><font size='6'>HAVE YOU EVER WONDERED</font></br>
+        <font size='4'>
+          Do I have too many warnings?  Are there any low-hanging fruit?  <b>Is my project normal??</b>
+          <br>
+          We are working to answer these questions with data.
+        </font>
+      </p>
+      <p align="center">
+        <a href="/data">Click through to see the full breakdown, with graphs.</a>
+      </p>
+      <hr>
+      <br>
+      <div id="pageTop"></div>
+      <br><br>
+      <p align='left'>
+        <font size='2'>
+          Working in Revit, especially on large projects, we often get warnings that what
+          we are drawing or modeling is not working as we might have expected. Some of
+          these can be ignorable, but many can cause issues with speed, stability, and accuracy.
+          <br><br>
+          Knowing how to prioritize and address these warnings within our own projects requires
+          that we understand what a "normal" rate of incoming warnings is, and how they are
+          typically distributed. We can use this knowledge to quickly identify when something
+          in a project is going unexpectedly, either from inexperienced staff that require
+          more training or unforeseen complications in design that could require rethinking
+          the expected time and fee for the project.
+          <br><br>
+          Looking at this data from an office wide level is also useful for managers
+          interested in identifying common issues that arise on all of their projects. This
+          allows us to better target education efforts, and to push new boundaries of
+          information modeling by maintaining accurate, reliable models.
+          <br><br>
+          Hopefully this information can start to answer questions like those above,
+          helping users to understand their projects and empowering BIM leaders to target
+          their training efforts and produce higher quality models.
+          <br><br>
+        </font>
+	<form action="/email" enctype="multipart/form-data" method="post" style="margin-left: 10px" id="form1">
+		<p>If you would like to recieve updates with new data and results, please enter your email below: </p>
+		<input type="email" name="email" autocomplete="on" placeholder="myemail@example.com"><br><br>
+		<input name="emailSubmit" type="button" value="Send" class="btn btn-primary" onclick="submitModal();">
+	</form>
+      </p>
+      <br><br><br><br><br>
+    </div>
+  </div>
+  <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Thanks!</h4>
+      </div>
+      <div class="modal-body">
+        We will be sure to keep you up to date when new results or features come out!
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal -->
+  <br><br><br>
+  <script>
+    var m = {};
+    var j = [];
+    var itemsPerPage = 4;
+
+    $.ajax({
+      type: 'GET',
+      url: "./json/MainData.json",
+      dataType: "json",
+      success: function(data) { m = data;},
+      async: false
+    });
+
+    var mainLine = m.phases;
+    var mainBox = m.iqr;
+    var incomingMain = MarkupIndex(m);
+    $('#pageTop').empty();
+    $('#pageTop').html(incomingMain);
+    line(mainLine, 'Main');
+    boxplot(mainBox, 'Main');
+  </script>
+  <script>
+    submitModal = function(){
+     $('#myModal').modal('show');
+     document.forms['form1'].submit();
+    }
+  </script>
+</body>
+</html>

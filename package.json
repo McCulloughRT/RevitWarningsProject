@@ -1,0 +1,20 @@
+{
+  "name": "warnings",
+  "version": "0.1.0",
+  "description": "Revit Warnings Server Application",
+  "main": "xprs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.2",
+    "cheerio": "^0.19.0",
+    "express": "^4.13.3",
+    "iconv-lite": "^0.4.11",
+    "mathjs": "^2.2.0",
+    "mongoose": "^4.1.5",
+    "multiparty": "^4.1.2"
+  }
+}

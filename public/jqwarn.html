@@ -1,0 +1,121 @@
+<html>
+<head>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-43851017-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <title> Revit Warnings </title>
+  <link rel="stylesheet" type="text/css" href="./css/warnStyle.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.bootpag.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="./js/line.js"></script>
+  <script src="./js/pie.js"></script>
+  <script src="./js/box.js"></script>
+  <script src="./js/boxplot.js"></script>
+  <script src="./js/indFrame.js"></script>
+
+</head>
+<body id='backgroundStyle'>
+  <br /><br />
+  <div id='main'>
+    <br />
+    <p id='titleLine' align='center' style='margin-top: 20px; margin-bottom: 10px'><font color='#736868' size='50'>Revit Warnings Project</font></p>
+    <br />
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="/data">Data </a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/upload"><b><font size='4' color='#369b8b'>Contribute Data ! </font></b></a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <br>
+    <div id="pageTop"></div>
+
+    <p align='center'><font color='#736868' size='5'>Individual Warnings: </font></p>
+    <div class='paginator' id='paginatorTop'></div>
+    <br />
+    <div id="accordion"></div>
+    <div class='paginator' id='paginatorBottom'></div>
+    <br />
+  </div>
+  <br><br><br>
+  <script type="text/javascript">
+    var m = {};
+    var j = [];
+    var itemsPerPage = 4;
+
+    $.ajax({
+      type: 'GET',
+      url: "./json/MainData.json",
+      dataType: "json",
+      success: function(data) { m = data;},
+      async: false
+    });
+    $.ajax({
+      type: 'GET',
+      url: "./json/SortedData.json",
+      dataType: "json",
+      success: function(data) { j = data;},
+      async: false
+    });
+
+    var mainLine = m.phases;
+    var mainBox = m.iqr;
+    var incomingMain = MarkupMain(m);
+    $('#pageTop').empty();
+    $('#pageTop').html(incomingMain);
+    line(mainLine, 'Main');
+    boxplot(mainBox, 'Main');
+
+    WriteWarningData(0);
+
+    $('#paginatorTop, #paginatorBottom').bootpag({
+      total: Math.round((j.length / 4) + 0.4),
+      maxVisible: 10
+    }).on("page", function(event, num) {
+      WriteWarningData((num - 1));
+    })
+
+    function WriteWarningData(page) {
+      $('#accordion').empty();
+      for (var p = (page * itemsPerPage); p < ((page * itemsPerPage) + itemsPerPage); p++) {
+        var pieData = j[p].percent;
+        var lineData = j[p].phases;
+        var boxData = j[p].iqr;
+        var incoming = MarkupWarnings(p, j[p]);
+        $('#accordion').append(incoming);
+
+        line(lineData, p);
+        pie(pieData, p);
+        boxplot(boxData, p);
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+</body>
