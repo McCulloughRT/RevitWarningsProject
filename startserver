@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# Invoke the Forever module (to START node.js server).
-forever \
-start \
--al forever.log \
--ao out.log \
--ae err.log \
-xprs.js
