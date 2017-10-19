@@ -1,6 +1,8 @@
 # RevitWarningsProject
 NodeJS backend for the Revit Warnings Project
 
+The active phase of this project has ended, [click here to view an archived version of the frontend!](http://ryantm.io/revitWarnings/)
+
 Start with xprs.js, this is the node server app and it calls all other classes.
 <ul>
 <li>html2db.js parses the html upload using cheerio, hashes the results, and compares to the database to prevent duplicates. It then saves the new documents to mongodb.</li>
